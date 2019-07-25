@@ -1,0 +1,14 @@
+DFS(vertex)
+
+    path.push_back(vertex)
+    visited[vertex] = true
+
+    if we found the exit
+        output path
+    else
+        for each neighbor v of vertex
+            if not visited[v]
+                DFS(v)
+
+    visited[vertex] = false
+    path.pop_back()

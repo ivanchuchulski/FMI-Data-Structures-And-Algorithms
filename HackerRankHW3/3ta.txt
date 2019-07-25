@@ -1,0 +1,88 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+
+
+bool isPossible(long  int*arr, int N, long int K, int Time)
+{
+    long  int* newArr = new  long int[N];
+    for (int i = 0; i < N; i++)
+    {
+        newArr[i] = arr[i];
+    }
+
+    for (int i = 0; i < N; i++)
+    {
+        if (newArr[i] > 0)
+        {
+            newArr[i] -= Time;
+        }
+    }
+
+    long  int counter = 0;
+    for (int i = 0; i < N; i++)
+    {
+            if (newArr[i] > 0)
+            {
+                if (newArr[i] % (K-1) == 0)
+                {
+                    counter += (newArr[i] / (K - 1));
+                }
+                else
+                {
+                    counter += (newArr[i] / (K - 1) + 1);
+                }
+
+            }
+    }
+
+    if (Time >= counter)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+int main()
+{
+    int N;
+    int k;
+    cin >> N;
+    cin >> k;
+    long  int* arr = new  long int[N];
+    for (int i = 0; i < N; i++)
+    {
+        cin >> arr[i];
+
+    }
+    sort(arr, arr + N);
+    int low = 1;
+    int high = arr[N - 1];
+    if (k ==1)
+    {
+        cout << high << endl;
+        return 0;
+    }
+    int minTime;
+    
+    while (low<=high)
+    {
+        int mid = (low + high) / 2;
+        if (isPossible(arr, N, k, mid))
+        {
+            minTime = mid;
+            high = mid-1;
+
+        }
+        else
+        {
+            low = mid + 1;
+        }
+    }
+    cout << minTime << endl;
+    return 0;
+
+}
