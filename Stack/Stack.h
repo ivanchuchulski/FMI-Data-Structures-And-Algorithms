@@ -4,6 +4,7 @@ struct Node
 {
 	int _data;
 	Node* _next;
+
 	Node(int data, Node* next = nullptr)
 		:	_data(data), _next(next)
 	{}
@@ -20,7 +21,6 @@ private:
 	void CopyFrom(const Stack& other);
 
 public:
-
 	Stack();
 	Stack(const Stack& other);
 	~Stack();
