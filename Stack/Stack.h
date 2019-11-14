@@ -13,13 +13,6 @@ struct Node
 
 class Stack
 {
-private:
-	Node* _top;
-	size_t _size;
-
-private:
-	void CopyFrom(const Stack& other);
-
 public:
 	Stack();
 	Stack(const Stack& other);
@@ -28,23 +21,22 @@ public:
 
 	void Clear();
 
+	bool Empty() const;
+	int Size() const;
+
+	int Peek() const
+
 	void Push(int value);
 	void Pop();
 
+private:
+	void CopyOtherStack(const Stack& other);
 
-
-	int Peek() const
-	{
-		return _top->_data;
-	}
-
-	inline bool Empty() const
-	{
-		return _top == nullptr;
-	}
-
-
+private:
+	Node* _top;
+	size_t _size;
 };
+
 
 inline Stack::Stack()
 	: _top(nullptr), _size(0)
@@ -53,30 +45,35 @@ inline Stack::Stack()
 inline Stack::Stack(const Stack & other)
 	: _top(nullptr), _size(0)
 {
-	CopyFrom(other);
+	CopyOtherStack(other);
 }
-
 
 inline Stack::~Stack()
 {
 	Clear();
 }
 
-inline Stack & Stack::operator=(const Stack & other)
+inline Stack& Stack::operator=(const Stack& other)
 {
 	if (this != &other)
 	{
 		Clear();
-		CopyFrom(other);
+
+		if (!other.Empty()) 
+		{
+			CopyOtherStack(other);
+		}
 	}
 
-	return *this;// TODO: insert return statement here
+	return *this;
 }
 
 inline void Stack::Clear()
 {
 	if (Empty())
+	{
 		return;
+	}
 
 	Node* destroyer = nullptr;
 
@@ -90,11 +87,8 @@ inline void Stack::Clear()
 	_size = 0;
 }
 
-inline void Stack::CopyFrom(const Stack& other)
+inline void Stack::CopyOtherStack(const Stack& other)
 {
-	if (other.Empty())
-		return;
-
 	//copy _top first
 	_top = new Node(other._top->_data);
 
@@ -112,7 +106,23 @@ inline void Stack::CopyFrom(const Stack& other)
 }
 
 
-inline void Stack::Push(int value)
+bool Stack::Empty() const
+{
+	return _top == nullptr;
+}
+
+int Stack::Size() const
+{
+	return _size;
+}
+
+int Stack::Peek() const
+{
+	return _top->_data;
+}
+
+
+void Stack::Push(int value)
 {
 	Node* entry = new Node(value);
 	_size++;
@@ -127,10 +137,12 @@ inline void Stack::Push(int value)
 	_top = entry;
 }
 
-inline void Stack::Pop()
+void Stack::Pop()
 {
 	if (Empty())
+	{
 		return;
+	}
 
 	Node* destroyer = _top;
 	_top = _top->_next;
@@ -138,10 +150,4 @@ inline void Stack::Pop()
 	delete destroyer;
 	_size--;
 }
-
-
-
-
-
-
 
